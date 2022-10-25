@@ -1,6 +1,6 @@
 import json
 
-from attribute import Attribute
+from .attribute import Attribute
 
 
 class Widget:
