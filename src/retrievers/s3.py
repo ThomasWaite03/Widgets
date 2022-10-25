@@ -15,6 +15,9 @@ class S3RequestRetriever(RequestRetriever):
             next_key = next_key_response['Contents'][0]['Key']
             obj_response = self._s3_client.get_object(Key=next_key, Bucket=self._bucket)
             obj_str = obj_response['Body'].read().decode('utf-8')
+
+            # Delete object on S3 and then return a WidgetRequest
+            self._s3_client.delete_object(Key=next_key, Bucket=self._bucket)
             return WidgetRequest(obj_str)
         else:
             return None
