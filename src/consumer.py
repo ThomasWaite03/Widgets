@@ -1,4 +1,5 @@
 import time
+import logging
 
 from context import get_strategies
 
@@ -7,6 +8,12 @@ def main():
     request_retriever, request_processor = get_strategies()
     start_time = time.time()
     max_seconds = 30
+
+    # Set up logging configuration
+    time_string = time.strftime('%m%d%Y%H%M%S')
+    log_filename = f'./logs/consumer-log-{time_string}.txt'
+    format_str = '%(asctime)s - %(message)s'
+    logging.basicConfig(filename=log_filename, filemode='w', format=format_str, level=logging.INFO)
 
     while time.time() - start_time < max_seconds:
         widget_request = request_retriever.get_next()

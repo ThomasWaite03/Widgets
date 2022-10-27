@@ -1,4 +1,5 @@
 import boto3
+import logging
 
 from .processor import RequestProcessor
 
@@ -9,6 +10,8 @@ class S3RequestProcessor(RequestProcessor):
         self._s3_client = boto3.client('s3')
 
     def _create_widget(self, widget_request):
+        logging.info(f'Processing S3 create widget request for widget_id: {widget_request.get_widget_id()}')
+
         owner = widget_request.get_owner().replace(' ', '-').lower()
         widget_key = f'widgets/{owner}/{widget_request.get_widget_id()}'
         data = widget_request.get_widget().to_string().encode()

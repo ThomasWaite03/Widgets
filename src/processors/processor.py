@@ -1,3 +1,5 @@
+import logging
+
 from abc import ABC, abstractmethod
 
 
@@ -11,7 +13,7 @@ class RequestProcessor(ABC):
         elif widget_request.get_type() == 'delete':
             self._delete_widget(widget_request)
         else:
-            print('WARNING: Invalid request type.')
+            logging.warning('Invalid request type processed')
 
     @abstractmethod
     def _create_widget(self, widget_request):

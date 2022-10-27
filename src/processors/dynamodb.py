@@ -1,4 +1,5 @@
 import boto3
+import logging
 
 from .processor import RequestProcessor
 
@@ -9,8 +10,9 @@ class DynamoDBRequestProcessor(RequestProcessor):
         self._dynamo_client = boto3.client('dynamodb')
 
     def _create_widget(self, widget_request):
-        widget = widget_request.get_widget()
+        logging.info(f'Processing DynamoDB create widget request for widget_id: {widget_request.get_widget_id()}')
 
+        widget = widget_request.get_widget()
         item = {}
         for attribute in widget.get_other_attributes():
             item[attribute.get_name()] = {"S": attribute.get_value()}

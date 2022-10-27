@@ -1,5 +1,6 @@
 import boto3
 import json
+import logging
 
 from .retriever import RequestRetriever
 from widgets.request import WidgetRequest
@@ -21,7 +22,7 @@ class S3RequestRetriever(RequestRetriever):
             self._s3_client.delete_object(Key=next_key, Bucket=self._bucket)
 
             if obj_str == '' or json.loads(obj_str)['widgetId'] == 'bad':
-                print('WARNING: Invalid widget.')
+                logging.warning('Invalid widget request received')
                 return None
             else:
                 return WidgetRequest(obj_str)
