@@ -5,21 +5,21 @@ from .attribute import Attribute
 
 class Widget:
     def __init__(self, widget_string):
-        self._widget_string = json.dumps(widget_string)
+        self._widget_string = widget_string
         widget_json = json.loads(widget_string)
 
         self._id = widget_json["widgetId"]
         self._owner = widget_json["owner"]
 
-        if 'label' in widget_json and widget_json["label"] == '':
-            self._label = None
-        elif 'label' in widget_json:
+        if 'label' in widget_json and widget_json["label"] != '':
             self._label = widget_json["label"]
+        else:
+            self._label = None
 
-        if 'description' in widget_json and widget_json["description"] == '':
-            self._description = None
-        elif 'description' in widget_json:
+        if 'description' in widget_json and widget_json["description"] != '':
             self._description = widget_json["description"]
+        else:
+            self._description = None
 
         # Create attribute objects for the "other attributes"
         self._other_attributes = []
@@ -56,17 +56,17 @@ class Widget:
         return self._other_attributes
 
     def add_other_attribute(self, attribute):
-        self.delete_other_attribute(attribute.name)
+        self.delete_other_attribute(attribute.get_name())
         self._other_attributes += [attribute]
 
         widget_json = json.loads(self._widget_string)
-        widget_json["otherAttributes"] += [{attribute.name: attribute.value}]
+        widget_json["otherAttributes"] += [{attribute.get_name(): attribute.get_value()}]
         self._widget_string = json.dumps(widget_json)
 
     def delete_other_attribute(self, name):
         idx_to_delete = None
         for idx, attribute in enumerate(self._other_attributes):
-            if attribute.name == name:
+            if attribute.get_name() == name:
                 idx_to_delete = idx
 
         if idx_to_delete is not None:

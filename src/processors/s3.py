@@ -43,8 +43,8 @@ class S3RequestProcessor(RequestProcessor):
                 original_widget.set_description(updated_info_widget.get_description())
 
             for attr in updated_info_widget.get_other_attributes():
-                if attr.value == '':
-                    original_widget.delete_other_attribute(attr)
+                if attr.get_value() == '':
+                    original_widget.delete_other_attribute(attr.get_name())
                 else:
                     original_widget.add_other_attribute(attr)
 
