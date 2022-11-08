@@ -1,4 +1,5 @@
 import unittest
+import json
 
 from widgets.widget import Widget
 
@@ -9,8 +10,19 @@ class WidgetTestCase(unittest.TestCase):
         self.owner = 'owner A'
         self.label = 'Label A'
         self.description = 'Description A'
-        self.widget_string = '[{"name": "name", "value": "john"}, {"name": "state", "value": "utah"}]'
-        self.widget = Widget(self.id, self.owner, self.label, self.description, self.widget_string)
+
+        widget_obj = {
+            'widgetId': self.id,
+            'owner': self.owner,
+            'label': self.label,
+            'description': self.description,
+            'otherAttributes': [
+                {"name": "name", "value": "john"},
+                {"name": "state", "value": "utah"}
+            ]
+        }
+        self.widget_string = json.dumps(widget_obj)
+        self.widget = Widget(self.widget_string)
 
     def test_get_id(self):
         self.assertEqual(self.widget.get_id(), self.id)
