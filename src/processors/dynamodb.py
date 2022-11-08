@@ -96,4 +96,28 @@ class DynamoDBRequestProcessor(RequestProcessor):
             )
 
     def _delete_widget(self, widget_request):
-        pass
+        logging.info(f'Processing DynamoDB delete widget request for widget_id: {widget_request.get_widget_id()}')
+
+        # Query the table to see if the widget exists
+        resp = self._dynamo_client.query(
+            TableName=self._table,
+            ExpressionAttributeValues={
+                ':id': {
+                    'S': widget_request.get_widget_id()
+                }
+            },
+            KeyConditionExpression='id = :id'
+        )
+
+        if resp['Count'] == 0:
+            logging.warning('Widget cannot be deleted, because it does not exist.')
+        else:
+            # Delete the widget item from the table
+            self._dynamo_client.delete_item(
+                TableName=self._table,
+                Key={
+                    'id': {
+                        'S': widget_request.get_widget_id()
+                    }
+                }
+            )
