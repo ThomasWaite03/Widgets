@@ -27,16 +27,8 @@ class WidgetRequest:
 
     def get_widget(self):
         request = json.loads(self._json_request)
-        widget_string = json.dumps(request['otherAttributes'])
+        del(request["type"])
+        del(request["requestId"])
 
-        if 'label' in request:
-            label = request['label']
-        else:
-            label = None
-
-        if 'description' in request:
-            description = request['description']
-        else:
-            description = None
-
-        return Widget(self._widget_id, self._owner, label, description, widget_string)
+        widget_string = json.dumps(request)
+        return Widget(widget_string)

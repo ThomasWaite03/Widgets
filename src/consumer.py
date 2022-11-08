@@ -2,6 +2,7 @@ import time
 import logging
 
 from context import get_strategies
+from retrievers.sqs import SQSRequestRetriever
 
 
 def main():
@@ -21,7 +22,8 @@ def main():
             time.sleep(0.1)
         else:
             request_processor.process(widget_request)
-            request_retriever.delete_last(widget_request)
+            if isinstance(request_retriever, SQSRequestRetriever):
+                request_retriever.delete_last(widget_request)
 
 
 if __name__ == "__main__":
