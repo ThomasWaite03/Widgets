@@ -52,4 +52,21 @@ class S3RequestProcessor(RequestProcessor):
             self._s3_client.put_object(Bucket=self._bucket, Key=widget_key, Body=data)
 
     def _delete_widget(self, widget_request):
-        pass
+        logging.info(f'Processing S3 delete widget request for widget_id: {widget_request.get_widget_id()}')
+
+        owner = widget_request.get_owner().replace(' ', '-').lower()
+        widget_key = f'widgets/{owner}/{widget_request.get_widget_id()}'
+
+        # Check to see if the widget actually exists
+        resp = None
+        try:
+            resp = self._s3_client.get_object(Key=widget_key, Bucket=self._bucket)
+        except botocore.exceptions.ClientError:
+            logging.warning('Widget cannot be deleted, because it does not exist.')
+
+        if resp is not None:
+            # Delete the widget object from the S3 bucket
+            self._s3_client.delete_object(
+                Bucket=self._bucket,
+                Key=widget_key
+            )

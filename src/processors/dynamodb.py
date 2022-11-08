@@ -43,7 +43,7 @@ class DynamoDBRequestProcessor(RequestProcessor):
             KeyConditionExpression='id = :id'
         )
 
-        if resp is None or resp['Count'] == 0:
+        if resp['Count'] == 0:
             logging.warning('Widget cannot be updated, because it does not exist.')
         else:
             # Prepare values for boto3 update command
