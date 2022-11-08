@@ -29,7 +29,7 @@ class S3RequestProcessor(RequestProcessor):
         resp = None
         try:
             resp = self._s3_client.get_object(Key=widget_key, Bucket=self._bucket)
-        except botocore.exceptions.ClientError as error:
+        except botocore.exceptions.ClientError:
             logging.warning('Widget cannot be updated, because it does not exist.')
 
         if resp is not None:
