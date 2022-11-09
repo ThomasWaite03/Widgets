@@ -22,7 +22,7 @@ class S3RequestRetriever(RequestRetriever):
             self._s3_client.delete_object(Key=next_key, Bucket=self._bucket)
 
             if obj_str == '' or json.loads(obj_str)['widgetId'] == 'bad':
-                logging.warning('Invalid widget request received')
+                logging.warning('Invalid widget request received from S3 bucket.')
                 return None
             else:
                 return WidgetRequest(obj_str)

@@ -1,6 +1,7 @@
 import boto3
 import logging
 import sys
+import json
 
 from .retriever import RequestRetriever
 from widgets.request import WidgetRequest
@@ -36,10 +37,17 @@ class SQSRequestRetriever(RequestRetriever):
                 return None
 
             for msg in messages:
-                if 'Body' in msg and 'ReceiptHandle' in msg:
+                if 'Body' in msg and 'ReceiptHandle' in msg and msg['Body'] != '' \
+                        and json.loads(msg['Body'])['widgetId'] != 'bad':
                     self._cached_requests.append(WidgetRequest(msg['Body'], receipt_handle=msg['ReceiptHandle']))
+                else:
+                    logging.error('Invalid widget request received from SQS queue.')
 
-        return self._cached_requests.pop()
+        # If for some reason no valid requests were received, just return None
+        if len(self._cached_requests) == 0:
+            return None
+        else:
+            return self._cached_requests.pop()
 
     def delete_last(self, widget_request):
         # If the request comes from SQS, delete it from the queue

@@ -31,6 +31,12 @@ class S3RequestProcessorTestCase(unittest.TestCase):
 
         self.assertTrue(key_in_bucket)
 
+    def test_update_widget(self):
+        pass
+
+    def test_delete_widget(self):
+        pass
+
 
 if __name__ == '__main__':
     unittest.main()

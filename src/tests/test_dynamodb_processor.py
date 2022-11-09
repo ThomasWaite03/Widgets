@@ -39,6 +39,12 @@ class DynamoDBRequestProcessorTestCase(unittest.TestCase):
         )
         self.assertEqual(count, 1)
 
+    def test_update_widget(self):
+        pass
+
+    def test_delete_widget(self):
+        pass
+
 
 if __name__ == '__main__':
     unittest.main()
