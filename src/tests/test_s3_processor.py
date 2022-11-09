@@ -55,7 +55,6 @@ class S3RequestProcessorTestCase(unittest.TestCase):
         # See if the widget had its attributes updated
         if response is not None:
             widget_string = response['Body'].read().decode('utf-8')
-            print('widget_string', widget_string)
             current_widget = Widget(widget_string)
 
             updated_correctly = True
