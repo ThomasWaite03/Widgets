@@ -60,7 +60,12 @@ class Widget:
         self._other_attributes += [attribute]
 
         widget_json = json.loads(self._widget_string)
-        widget_json["otherAttributes"] += [{attribute.get_name(): attribute.get_value()}]
+        widget_json["otherAttributes"] += [
+            {
+                "name": attribute.get_name(),
+                "value": attribute.get_value()
+            }
+        ]
         self._widget_string = json.dumps(widget_json)
 
     def delete_other_attribute(self, name):
