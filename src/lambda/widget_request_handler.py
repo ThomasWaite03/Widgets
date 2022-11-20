@@ -1,15 +1,12 @@
 import json
 import logging
-import time
 import boto3
 import botocore
 
 client = boto3.client('sqs')
 
-# Set up logging configuration
-time_string = time.strftime('%m%d%Y%H%M%S')
-format_str = '%(asctime)s - %(message)s'
-logging.basicConfig(format=format_str, level=logging.INFO)
+# Set up logging
+logging.getLogger().setLevel(logging.INFO)
 
 
 def widget_request_handler(event, context):
