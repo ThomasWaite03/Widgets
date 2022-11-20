@@ -18,4 +18,10 @@ def enqueue_request(formatted_request):
 
 
 def is_valid_request(event):
-    pass
+    if 'body' in event and event['body'] != '':
+        request_str = event['body']
+        request = json.loads(request_str)
+        attributes_present = all(a in request for a in ['widgetId', 'owner', 'type', 'requestId'])
+        if attributes_present and request['widgetId'] != 'bad':
+            return True
+    return False
