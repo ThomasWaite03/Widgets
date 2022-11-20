@@ -1,7 +1,15 @@
 import json
+import logging
+import time
 import boto3
+import botocore
 
 client = boto3.client('sqs')
+
+# Set up logging configuration
+time_string = time.strftime('%m%d%Y%H%M%S')
+format_str = '%(asctime)s - %(message)s'
+logging.basicConfig(format=format_str, level=logging.INFO)
 
 
 def widget_request_handler(event, context):
@@ -31,7 +39,13 @@ def create_error_message(error):
 
 
 def enqueue_request(request_str):
-    return ''
+    try:
+        response = client.get_queue_url(QueueName='cs5260-requests')
+        queue_url = response["QueueUrl"]
+        client.send_message(QueueUrl=queue_url, MessageBody=request_str)
+        logging.info('Successfully sent widget request to SQS queue.')
+    except botocore.exceptions.ClientError:
+        logging.error('Failed to enqueue request.')
 
 
 def is_valid_request(event):
@@ -41,4 +55,5 @@ def is_valid_request(event):
         attributes_present = all(a in request for a in ['widgetId', 'owner', 'type', 'requestId'])
         if attributes_present and request['widgetId'] != 'bad':
             return True
+    logging.warning('Invalid request made.')
     return False
