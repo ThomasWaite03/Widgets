@@ -1,19 +1,36 @@
 import json
 import boto3
 
+client = boto3.client('sqs')
+
 
 def widget_request_handler(event, context):
     if is_valid_request(event):
-        return enqueue_request(event['body'])
+        enqueue_request(event['body'])
+        return {
+            "statusCode": 200
+        }
     else:
-        return create_error_message()
+        return create_error_message({
+            "status": 400,
+            "error": "Bad Request",
+            "msg": "Your widget request was not formatted correctly or was incomplete."
+        })
 
 
 def create_error_message(error):
-    return ''
+    return {
+        "statusCode": error["status"],
+        "headers": {
+            "Content-Type": "text/html",
+            "x-amzn-ErrorType": error["error"]
+        },
+        "isBase64Encoded": False,
+        "body": f"{error['status']} ERROR {error['error']}: {error['msg']}"
+    }
 
 
-def enqueue_request(formatted_request):
+def enqueue_request(request_str):
     return ''
 
 
