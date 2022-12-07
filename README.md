@@ -9,6 +9,9 @@ read by the consumer program.
 ## Design & Architecture
 A UML diagram for the project can be found in the `docs` directory.
 
+#### The following is a diagram of the AWS architecture used in this project:
+<img src="./docs/AWS Architecture.png" width="50%" />
+
 ## Testing
 The unit tests for the consumer program were implemented using the unittest framework from Python's standard library. Many of the unit tests interact with AWS services 
 using the boto3 sdk, so they cover some aspects of integration testing in addition to the testing of individual components.
