@@ -6,6 +6,18 @@ is called the consumer, since it will try to read as many requests from a resour
 requests, I set up an API that triggers a lambda function which transforms API requests into widget requests. It then stores them in an SQS queue where they can be 
 read by the consumer program.
 
+## How to Run
+The consumer program requires you to specify the name of the resource where the widget requests are being stored and the name of the resource where the widgets are being stored or will be stored.
+
+**Example**: `python consumer.py -rb bucket_name_here -wt table_name_here`
+
+#### Parameters
+A list of all parameters can also be found with the following command: `python consumer.py -h`.
+* -rb, --readbucket : S3 bucket to retrieve widget requests from.
+* -rq, --readqueue : SQS queue to retrieve widget requests from.
+* -wb, --writebucket : S3 bucket to store widgets in.
+* -wt, --writetable : DynamoDB table to store widgets in.
+
 ## Design & Architecture
 A UML diagram for the project can be found in the `docs` directory. The design follows the principles of modularization and abstraction in order to develop a 
 program that allows for new features to be seamlessly aggregated and reduces the complexities associated with maintaining and testing the system. The implementation of the consumer program is broken up mainly into retrievers and processors. Retrievers are used to retrieve widget requests from resources such as an S3 bucket or an SQS queue. They return `WidgetRequest` objects which can be processed by a processor. Processors will use the `WidgetRequest` object to determine what operation needs to be performed and saves the request in the format appropriate for the resource where it is being saved on AWS. 
