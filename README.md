@@ -7,7 +7,8 @@ requests, I set up an API that triggers a lambda function which transforms API r
 read by the consumer program.
 
 ## Design & Architecture
-A UML diagram for the project can be found in the `docs` directory.
+A UML diagram for the project can be found in the `docs` directory. The design follows the principles of modularization and abstraction in order to develop a 
+program that allows for new features to be seamlessly aggregated and reduces the complexities associated with maintaining and testing the system. The implementation of the consumer program is broken up mainly into retrievers and processors. Retrievers are used to retrieve widget requests from resources such as an S3 bucket or an SQS queue. They return `WidgetRequest` objects which can be processed by a processor. Processors will use the `WidgetRequest` object to determine what operation needs to be performed and saves the request in the format appropriate for the resource where it is being saved on AWS. 
 
 #### The following is a diagram of the AWS architecture used in this project:
 <img src="./docs/AWS Architecture.png" width="50%" />
