@@ -11,7 +11,7 @@ The consumer program requires you to specify the name of the resource where the 
 
 **Example**: `python consumer.py -rb bucket_name_here -wt table_name_here`
 
-#### Parameters
+### Parameters
 A list of all parameters can also be found with the following command: `python consumer.py -h`.
 * -rb, --readbucket : S3 bucket to retrieve widget requests from.
 * -rq, --readqueue : SQS queue to retrieve widget requests from.
